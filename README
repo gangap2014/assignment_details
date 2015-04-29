@@ -1,0 +1,39 @@
+
+
+		Assignment on DevOps
+
+Below are the list of the activities performed for the assignment.
+
+1. To perform below activities, i have used puppet.
+	a. To install and start Tomcat
+	b. To install mysql-server and database
+	c. To install and start HTTPD Apache
+
+2. To build a war file from the provide link, installed maven using puppet.
+NOTE: Tired creating a war file from the link, but getting error. So went ahead with jpetstore.war file available in open market.
+
+3. The site.pp file is built with chaining arrow to resolve the dependency between packages.
+
+4. For provisioning the environment, i am using docker instead of vagrant.
+
+5. As expected, every time a build is triggered from jenkins below activities are performed:
+a. From image a container is created with port mapping from host to guest.
+b. Environment variable are used for maintaining the flexiblity in tomcat installation path and also for copying the application war file into tomcat.
+c. Using "docker exec" commands are executed in container from hosts, this is required for pre-reqiuites packages.
+d. A puppet masterless setup is done in container.
+e. Using "puppet apply" installation of packages are done as below:
+
+	 puppet apply --modulepath=/puppet/modules /puppet/manifests/site.pp --logdest=/var/log/test_lab_$uniq_id.log
+
+Files used are listed below:
+1. docker_script.sh
+	Functionality of script is as below:
+	a. The script is called from jenkins.
+        b. A image pre-baked with puppet is used, from which a container is created with unique name.
+        c. Required pre-reqiuites packages are installed.
+        d. Puppet modules, manifests files are applied in container through this script.
+	e. Application war file is copied in app server
+ 
+2. puppet.tar
+     It as all the modules and manifests file used for installing and starting the app server, database and web server.
+
